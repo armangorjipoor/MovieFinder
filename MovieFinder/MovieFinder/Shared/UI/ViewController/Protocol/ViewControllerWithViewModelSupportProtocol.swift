@@ -12,7 +12,7 @@ import UIKit
 protocol ViewControllerWithViewModelSupportProtocol where Self: UIViewController & ViewControllerActivityProtocol {
     func loading(animated: Bool, inner: Bool)
     func handleError(error: NSError)
-    func bindViewModelStatus(vm: SharedViewModelProtocol)
+    func bindViewModelStatus(vm: BaseViewModelProtocol)
     func refreshing()
     func submitted()
     func loaded()
@@ -22,7 +22,7 @@ protocol ViewControllerWithViewModelSupportProtocol where Self: UIViewController
 
 extension ViewControllerWithViewModelSupportProtocol {
     
-    func bindViewModelStatus(vm: SharedViewModelProtocol) {
+    func bindViewModelStatus(vm: BaseViewModelProtocol) {
         vm.statusPublisher
             .receive(on: DispatchQueue.main) // Replace `observeOn(MainScheduler.instance)` with Combine equivalent
             .sink { [weak self] status in

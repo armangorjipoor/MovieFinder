@@ -7,6 +7,6 @@
 
 import Foundation
 
-enum SharedViewModelStatus{
+enum BaseViewModelStatusEnum{
     case loading, loaded, error(error: NSError), none
 }

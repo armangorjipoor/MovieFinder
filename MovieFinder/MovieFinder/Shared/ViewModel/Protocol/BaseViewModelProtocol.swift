@@ -8,13 +8,13 @@
 import Foundation
 import Combine
 
-protocol SharedViewModelProtocol {
+protocol BaseViewModelProtocol {
     func loadData(first: Bool)
     func loadDataAutomatically(first: Bool)
-    var statusPublisher: CurrentValueSubject<SharedViewModelStatus, Never> { get set }
+    var statusPublisher: CurrentValueSubject<BaseViewModelStatusEnum, Never> { get set }
 }
 
-extension SharedViewModelProtocol {
+extension BaseViewModelProtocol {
     
     func loadDataAutomatically(first: Bool) {
         // You need to override this if you want automatic requests
