@@ -9,23 +9,11 @@ import Foundation
 import Combine
 
 class BaseViewModel: BaseViewModelProtocol {
-    var statusPublisher: CurrentValueSubject<BaseViewModelStatusEnum, Never> = .init(.none)
+
     var cancellables = Set<AnyCancellable>()
+    var statusPublisher: CurrentValueSubject<BaseViewModelStatusEnum, Never> = .init(.none)
     
-    init() {
-        statusPublisher
-            .handleEvents(receiveSubscription: { [unowned self] _ in
-                loadDataAutomatically(first: true)
-            })
-            .sink { _ in }
-            .store(in: &cancellables)
-    }
-    
-    open func loadDataAutomatically(first: Bool) {
-        // You need to override if you want automatic requests
-    }
-    
-    open func loadData(first: Bool) {}
+    func loadData() { }
 }
 
 
