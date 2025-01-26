@@ -9,17 +9,12 @@ import Foundation
 import Combine
 
 protocol BaseViewModelProtocol {
-    func loadData(first: Bool)
-    func loadDataAutomatically(first: Bool)
+    func loadData()
     var statusPublisher: CurrentValueSubject<BaseViewModelStatusEnum, Never> { get set }
 }
 
 extension BaseViewModelProtocol {
-    
-    func loadDataAutomatically(first: Bool) {
-        // You need to override this if you want automatic requests
-    }
-    
+
     func loadData(first: Bool) {
         // Default implementation can be overridden
     }

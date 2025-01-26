@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 import Combine
 
-class Base: UIViewController {
+class BaseViewController: UIViewController {
     
     public var cancellable: AnyCancellable?
     public var cancellables = Set<AnyCancellable>()

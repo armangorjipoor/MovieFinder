@@ -10,9 +10,9 @@ import UIKit
 
 final class MainCoordinator: CoordinatorProtocol {
     var navigationController: UINavigationController
-    private let dependencyManager: DependencyManager
+    private let dependencyManager: DependencyManagerProtocol
 
-    init(navigationController: UINavigationController, dependencyManager: DependencyManager) {
+    init(navigationController: UINavigationController, dependencyManager: DependencyManagerProtocol) {
         self.navigationController = navigationController
         self.dependencyManager = dependencyManager
     }
@@ -25,10 +25,10 @@ final class MainCoordinator: CoordinatorProtocol {
     }
 
     func showCastDetail(castId: Int) {
-        let castCoordinator = CastDetailCoordinator(
-            navigationController: navigationController,
-            dependencyManager: dependencyManager
-        )
-        castCoordinator.start(with: castId)
+//        let castCoordinator = CastDetailCoordinator(
+//            navigationController: navigationController,
+//            dependencyManager: dependencyManager
+//        )
+//        castCoordinator.start(with: castId)
     }
 }

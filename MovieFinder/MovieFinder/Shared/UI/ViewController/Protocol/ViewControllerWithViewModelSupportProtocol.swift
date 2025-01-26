@@ -10,7 +10,7 @@ import Combine
 import UIKit
 
 protocol ViewControllerWithViewModelSupportProtocol where Self: UIViewController & ViewControllerActivityProtocol {
-    func loading(animated: Bool, inner: Bool)
+    func loading()
     func handleError(error: NSError)
     func bindViewModelStatus(vm: BaseViewModelProtocol)
     func refreshing()
