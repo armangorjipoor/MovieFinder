@@ -7,3 +7,12 @@
 
 import Foundation
 
+struct HomeResponse: Decodable, Mappable {
+    func map() -> String {
+        ""
+    }
+    
+    typealias T = String
+    
+    
+}

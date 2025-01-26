@@ -1,5 +1,5 @@
 //
-//  MediaListRoute.swift
+//  HomeRoute.swift
 //  MovieFinder
 //
 //  Created by Arman on 1/26/25.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum MediaListRoute: RawRepresentable {
+enum HomeRoute: RawRepresentable {
     case search
     typealias RawValue = String
     

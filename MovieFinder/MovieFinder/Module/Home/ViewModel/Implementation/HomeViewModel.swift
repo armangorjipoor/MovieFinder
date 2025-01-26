@@ -11,9 +11,9 @@ class HomeViewModel: BaseViewModel, HomeViewModelProtocol {
     
     var dataset: [HomeModel] = []
     
-    let repository: AddressServiceRepositoryProtocol
+    let repository: HomeServiceRepositoryProtocol
     
-    init(repository: AddressServiceRepositoryProtocol) {
+    init(repository: HomeServiceRepositoryProtocol) {
         self.repository = repository
         super.init()
     }
@@ -21,15 +21,22 @@ class HomeViewModel: BaseViewModel, HomeViewModelProtocol {
     override func loadData() {
         
         statusPublisher.value = .loading
-        repository.addressList().do(onSuccess: { [weak self] dataset in
-            guard let weak = self else { return }
-            weak.dataset = dataset
-            weak.statusRelay.accept(.loaded)
-        }, onError: { [weak self] error in
-            guard let weak = self else { return }
-            weak.statusRelay.accept(.error(error: error as NSError))
-        }).subscribe().disposed(by: disposeBag)
+        repository.search(via: "").sink(receiveCompletion: { [ weak self ] completion in
+            guard let weakSelf = self else { return }
+            switch completion {
+            case .finished:
+                print("Completed successfully")
+            case .failure(let error):
+                let err = error as NSError
+                weakSelf.statusPublisher.value = .error(error: err)
+            }
+        }, receiveValue: { [weak self] dataSet in
+            guard let weakSelf = self else { return }
+            weakSelf.statusPublisher.value = .loaded
+            print("Received addresses: \(dataSet)")
+        })
+        .store(in: &cancellables)
         
     }
-
+    
 }

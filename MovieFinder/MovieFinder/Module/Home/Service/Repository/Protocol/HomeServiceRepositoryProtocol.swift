@@ -6,3 +6,8 @@
 //
 
 import Foundation
+import Combine
+
+protocol HomeServiceRepositoryProtocol: BaseServiceRepositoryProtocol {
+    func search(via text: String) -> AnyPublisher<[String], Error>
+}

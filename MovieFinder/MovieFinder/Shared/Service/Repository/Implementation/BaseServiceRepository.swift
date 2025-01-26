@@ -9,7 +9,7 @@ import Foundation
 
 
 //TODO: init with our DI system
-class Repository: BaseServiceRepositoryProtocol {
+class BaseServiceRepository: BaseServiceRepositoryProtocol {
     
     lazy var network: NetworkProtocol = Network(sessionManager: NetworkSession())
 }
