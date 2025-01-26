@@ -102,34 +102,31 @@ class Network:  NSObject, NetworkProtocol {
      
         return headers
     }
-
+    
     internal func serverApiPathString(path: String, parameter: [String: String]? ) -> URL {
-        if path.starts(with: "http"), let possibleFullUrl = URL(string: path) {
-            return possibleFullUrl
-        } else {
+        
+        guard var urlComponent = URLComponents(string: "\(endPointProtocol())://\(endPoint())") else { return URL(string: "")!}
+        
+        if let params = parameter {
+            let queryItems = params.map { key, value in
+                URLQueryItem(name: key, value: value) }
             
-            guard var urlComponent = URLComponents(string: "\(endPointProtocol())://\(endPoint())") else { return URL(string: "")!}
-            
-            if let params = parameter {
-                let queryItems = params.map { key, value in
-                    URLQueryItem(name: key, value: value) }
-                
-                urlComponent.queryItems = queryItems
-            }
-            
-            let url = urlComponent.url!
-            guard let path2 = path.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else { return URL(string: "")!}
-            
-            let  urlWithPath = url.appendingPathComponent(path2).absoluteString
-            let res = URL.init(string: urlWithPath)
-            return res ?? url
+            urlComponent.queryItems = queryItems
         }
+        
+        let url = urlComponent.url!
+        guard let path2 = path.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else { return URL(string: "")!}
+        
+        let  urlWithPath = url.appendingPathComponent(path2).absoluteString
+        let res = URL.init(string: urlWithPath)        
+        return res ?? url
+        
     }
     
-    open func endPointProtocol() -> String { "https" }
+    open func endPointProtocol() -> String { NetworkConstant.httpsProtocl.rawValue }
     
     open func endPoint() -> String {
-        preconditionFailure("Please override endPoint")
+        NetworkConstant.APIRoot.rawValue
     }
     
     private func handleResponse(data: Data?, response: URLResponse?, error: Error?, promise: @escaping (Result<Data, Error>) -> Void) {
