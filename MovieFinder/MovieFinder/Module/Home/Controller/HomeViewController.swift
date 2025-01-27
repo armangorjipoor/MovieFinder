@@ -23,10 +23,17 @@ class HomeViewController: ViewControllerWithViewModelSupport {
         let view = UITextField()
         view.delegate = self
         view.borderStyle = .roundedRect
-        view.backgroundColor = .white
+        view.backgroundColor = .lightGray
         view.textAlignment = .left
         view.heightAnchor.constraint(equalToConstant: 40).isActive = true
         view.placeholder = "فیلم، سریال، بازیگر"
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
+    private lazy var emptyView: EmptyView  = {
+        let view = EmptyView()
+        view.isHidden = true
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
@@ -56,7 +63,7 @@ class HomeViewController: ViewControllerWithViewModelSupport {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .lightGray
+        view.backgroundColor = .white
         bindViewModelStatus(vm: vm)
         
         NotificationCenter.default.publisher(for: UITextField.textDidChangeNotification, object: searchField)
@@ -80,7 +87,7 @@ class HomeViewController: ViewControllerWithViewModelSupport {
             searchField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: HomeViewControllerConstant.subviewsSideDistance),
             searchField.trailingAnchor.constraint(equalTo: view.trailingAnchor,
                                                   constant:  -HomeViewControllerConstant.subviewsSideDistance),
-            searchField.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20)
+            searchField.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 5)
         ])
         
         view.addSubview(resultTableView)
@@ -92,7 +99,14 @@ class HomeViewController: ViewControllerWithViewModelSupport {
             resultTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: 20)
         ])
         
-      
+        view.addSubview(emptyView)
+        NSLayoutConstraint.activate([
+            emptyView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: HomeViewControllerConstant.subviewsSideDistance),
+            emptyView.trailingAnchor.constraint(equalTo: view.trailingAnchor,
+                                                      constant:  -HomeViewControllerConstant.subviewsSideDistance),
+            emptyView.topAnchor.constraint(equalTo: searchField.bottomAnchor, constant: 10),
+            emptyView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: 20)
+        ])
     }
 
     private func performSearch(for term: String) {
@@ -103,17 +117,23 @@ class HomeViewController: ViewControllerWithViewModelSupport {
     }
  
     override func loaded() {
-//        hideApplicationPageLoading(animated: true, completion: nil)
+//        hideApplicationPageLoading()
+        if let anyItem = vm.mediaDataSet {
+            if anyItem.isEmpty {
+                emptyView.isHidden = false
+            } else {
+                emptyView.isHidden = true
+            }
+        } else {
+            emptyView.isHidden = false
+        }
         resultTableView.reloadData()
     }
     
     override func handleError(error: NSError) {
 //        hideApplicationPageLoading(animated: true, completion: nil)
 //        
-//        showRetryView(retryHandler: { [weak self] in
-//            guard let weak = self else { return }
-//            weak.vm.loadData(first: false)
-//        })
+        showAlert(withMessage: "خطایی پیش آمده است")
     }
 
 }
