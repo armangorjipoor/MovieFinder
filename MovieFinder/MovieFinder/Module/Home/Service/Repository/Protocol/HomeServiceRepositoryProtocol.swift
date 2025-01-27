@@ -9,5 +9,5 @@ import Foundation
 import Combine
 
 protocol HomeServiceRepositoryProtocol: BaseServiceRepositoryProtocol {
-    func search(via text: String) -> AnyPublisher<[String], Error>
+    func search(via text: String) -> AnyPublisher<HomeModel, Error>
 }

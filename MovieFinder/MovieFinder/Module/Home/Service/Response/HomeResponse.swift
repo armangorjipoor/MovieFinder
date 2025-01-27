@@ -8,11 +8,19 @@
 import Foundation
 
 struct HomeResponse: Decodable, Mappable {
-    func map() -> String {
-        ""
+    
+       let page: Int
+       let isSucceed: Bool
+       let resultItems: [ResultItem]
+       
+       enum CodingKeys: String, CodingKey {
+           case page, isSucceed = "is_succeed", resultItems = "result_items"
+       }
+    
+    
+    typealias T = HomeModel
+    func map() -> HomeModel {
+        T(page: page, isSucceed: isSucceed, resultItems: resultItems.map({$0.map()}))
     }
-    
-    typealias T = String
-    
-    
 }
+

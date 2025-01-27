@@ -8,21 +8,23 @@
 import Foundation
 import UIKit
 
+enum HomeViewControllerConstant {
+    static let tableViewCellIdentifier = "HomeTableViewCell"
+    static let collectionViewCellIdentifier = "CollectionViewCellIdentifier"
+}
 class HomeViewController: ViewControllerWithViewModelSupport {
    
     lazy var table: UITableView = {
         let view = UITableView()
-        view.delegate = self
-        view.dataSource = self
-        view.register(UI.Address.List.Cell.self, forCellReuseIdentifier: UI.Address.List.Cell.reuseIdentifier())
-        view.setupEmptyDataset(datasource: self, delegate: self)
+//        view.delegate = self
+//        view.dataSource = self
+//        view.register(UI.Address.List.Cell.self, forCellReuseIdentifier: UI.Address.List.Cell.reuseIdentifier())
         view.showsVerticalScrollIndicator = false
         return view
     }()
 
-    var vm: AddressViewModelProtocol
-    
-    init(vm: AddressViewModelProtocol) {
+    var vm: HomeViewModelProtocol
+    init(vm: HomeViewModelProtocol) {
         self.vm = vm
         super.init()
     }

@@ -8,5 +8,7 @@
 import Foundation
 
 struct HomeModel {
-    
+    let page: Int
+    let isSucceed: Bool
+    let resultItems: [ResultItem]
 }
