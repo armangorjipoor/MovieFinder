@@ -9,5 +9,9 @@ import Foundation
 import UIKit
 
 extension HomeViewController: UITableViewDelegate {
-    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if let mediaDetailItem = vm.mediaDataSet?.mediaDataset[indexPath.row] {
+            coordinator?.showMediaDetail(media: mediaDetailItem)            
+        }
+    }
 }

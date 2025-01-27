@@ -18,12 +18,16 @@ final class MainCoordinator: CoordinatorProtocol {
     }
 
     func start() {
-//        let mainViewModel = dependencyManager.resolve(MainViewModel.self)
-//        let mainViewController = MainViewController(viewModel: mainViewModel)
-//        mainViewController.coordinator = self
-//        navigationController.pushViewController(mainViewController, animated: true)
+        let homeViewController = HomeViewController(vm: dependencyManager.resolve(type: HomeViewModelProtocol.self, arguments: []))
+        homeViewController.coordinator = self
+        navigationController.pushViewController(homeViewController, animated: true)
     }
 
+    func showMediaDetail(media: HomeModel.ResultItem.Group.Media.Item) {
+        let mediaCoordinator = MediaDetailCoordinator(navigationController: navigationController)
+        mediaCoordinator.start(with: media)
+    }
+    
     func showCastDetail(castId: Int) {
 //        let castCoordinator = CastDetailCoordinator(
 //            navigationController: navigationController,

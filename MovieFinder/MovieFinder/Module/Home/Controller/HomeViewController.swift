@@ -46,6 +46,8 @@ class HomeViewController: ViewControllerWithViewModelSupport {
         return view
     }()
 
+    weak var coordinator: MainCoordinator?
+    
     var vm: HomeViewModelProtocol
     init(vm: HomeViewModelProtocol) {
         self.vm = vm
