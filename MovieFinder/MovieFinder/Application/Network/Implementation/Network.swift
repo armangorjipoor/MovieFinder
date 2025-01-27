@@ -17,8 +17,7 @@ class Network:  NSObject, NetworkProtocol {
                              method: NetworkHTTPMethodEnum,
                              parameter: [String: String]? = nil,
                              payload: Encodable?,
-                             timeout: TimeInterval,
-                             retryOnNoConnection: Bool = true) -> AnyPublisher<Data, Error> {
+                             timeout: TimeInterval) -> AnyPublisher<Data, Error> {
         
         Future<Data, Error> { [weak self] promise in
             guard let self = self else {
@@ -118,7 +117,9 @@ class Network:  NSObject, NetworkProtocol {
         guard let path2 = path.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else { return URL(string: "")!}
         
         let  urlWithPath = url.appendingPathComponent(path2).absoluteString
-        let res = URL.init(string: urlWithPath)        
+        let res = URL.init(string: urlWithPath)       
+        
+        print("😑 \(res) -- \(url)")
         return res ?? url
         
     }
@@ -166,11 +167,11 @@ class Network:  NSObject, NetworkProtocol {
     
     open func maximumTimeout() -> TimeInterval { 15 }
 
-    public func get(path: String, parameter: [String: String]? = nil, retryOnNoConnection: Bool = true, includeToken: Bool = true) -> AnyPublisher<Data, Error> {
-        return createTask(path: path, method: .get, parameter: parameter, payload: nil, timeout: maximumTimeout(), retryOnNoConnection: retryOnNoConnection)
+    public func get(path: String, parameter: [String: String]? = nil) -> AnyPublisher<Data, Error> {
+        return createTask(path: path, method: .get, parameter: parameter, payload: nil, timeout: maximumTimeout())
     }
 
-    public func post(path: String, payload: Encodable?, retryOnNoConnection: Bool = true, includeToken: Bool = true) -> AnyPublisher<Data, Error> {
-        return createTask(path: path, method: .post, payload: payload, timeout: maximumTimeout(), retryOnNoConnection: retryOnNoConnection)
+    public func post(path: String, payload: Encodable?) -> AnyPublisher<Data, Error> {
+        return createTask(path: path, method: .post, payload: payload, timeout: maximumTimeout())
     }
 }

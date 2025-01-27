@@ -31,6 +31,7 @@ public class DependencyManager: DependencyManagerProtocol {
     }
 
     private init() {
+        repositoryRegistery()
         viewModelRegistry()
     }
 }
