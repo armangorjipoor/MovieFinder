@@ -14,6 +14,7 @@ enum HomeViewControllerConstant {
     static let searchLimitCharacter = 2
     static let searchDelay = 2000
     static let subviewsSideDistance: CGFloat = 20.0
+    static let desiredResultItemsCount: Int = 99
 }
 
 class HomeViewController: ViewControllerWithViewModelSupport {
@@ -25,7 +26,6 @@ class HomeViewController: ViewControllerWithViewModelSupport {
         view.backgroundColor = .white
         view.textAlignment = .left
         view.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        view.addTarget(self, action: #selector(searchFieldDidChange), for: .editingChanged)
         view.placeholder = "فیلم، سریال، بازیگر"
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
@@ -46,16 +46,6 @@ class HomeViewController: ViewControllerWithViewModelSupport {
         return view
     }()
 
-    private lazy var btn: UIButton  = {
-        let view = UIButton()
-        view.backgroundColor = .blue
-        view.setTitle("Tap me", for: .normal)
-        view.widthAnchor.constraint(equalToConstant: 100).isActive = true
-        view.heightAnchor.constraint(equalToConstant: 100).isActive = true
-        view.addTarget(self, action: #selector(btnTap), for: .touchUpInside)
-        return view
-    }()
-    
     var vm: HomeViewModelProtocol
     init(vm: HomeViewModelProtocol) {
         self.vm = vm
@@ -106,22 +96,10 @@ class HomeViewController: ViewControllerWithViewModelSupport {
     private func performSearch(for term: String) {
         if term.count > HomeViewControllerConstant.searchLimitCharacter {
             print("\(term)")
-            vm.doSearch(for: term, count: 20, page: 1)
+            vm.doSearch(for: term, count: HomeViewControllerConstant.desiredResultItemsCount, page: 1)
         }
     }
-    
-    
-    @objc func searchFieldDidChange(field: UITextField) {
-        guard let searchText = field.text else { return }
-        if searchText.count > HomeViewControllerConstant.searchLimitCharacter {
-            //begin test
-        }
-    }
-    
-    
-    @objc func btnTap() {
-        vm.loadData()
-    }
+ 
     override func loaded() {
 //        hideApplicationPageLoading(animated: true, completion: nil)
         resultTableView.reloadData()
