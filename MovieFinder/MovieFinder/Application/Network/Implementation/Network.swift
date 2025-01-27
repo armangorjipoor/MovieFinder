@@ -117,7 +117,9 @@ class Network:  NSObject, NetworkProtocol {
         guard let path2 = path.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else { return URL(string: "")!}
         
         let  urlWithPath = url.appendingPathComponent(path2).absoluteString
-        let res = URL.init(string: urlWithPath)        
+        let res = URL.init(string: urlWithPath)       
+        
+        print("😑 \(res) -- \(url)")
         return res ?? url
         
     }

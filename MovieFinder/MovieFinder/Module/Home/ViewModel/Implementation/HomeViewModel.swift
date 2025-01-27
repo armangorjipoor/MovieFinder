@@ -8,7 +8,7 @@
 import Foundation
 
 class HomeViewModel: BaseViewModel, HomeViewModelProtocol {
-    var mediaDataSet: [HomeModel] = []
+    var mediaDataSet: HomeModel?
 
     let repository: HomeServiceRepositoryProtocol
     

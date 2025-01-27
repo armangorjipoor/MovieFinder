@@ -9,7 +9,7 @@ import Foundation
 
 struct HomeResponse: Decodable, Mappable {
     
-       let page: Int
+       let page: Int?
        let isSucceed: Bool
        let resultItems: [ResultItem]
        
@@ -20,7 +20,7 @@ struct HomeResponse: Decodable, Mappable {
     
     typealias T = HomeModel
     func map() -> HomeModel {
-        T(page: page, isSucceed: isSucceed, resultItems: resultItems.map({$0.map()}))
+        T(page: page ?? 0, isSucceed: isSucceed, resultItems: resultItems.map({$0.map()}))
     }
 }
 

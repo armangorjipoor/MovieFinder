@@ -15,7 +15,7 @@ protocol BaseViewModelProtocol {
 
 extension BaseViewModelProtocol {
 
-    func loadData(first: Bool) {
+    func loadData() {
         // Default implementation can be overridden
     }
 }

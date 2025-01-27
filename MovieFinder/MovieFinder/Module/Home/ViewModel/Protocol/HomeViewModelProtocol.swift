@@ -8,5 +8,5 @@
 import Foundation
 
 protocol HomeViewModelProtocol: BaseViewModelProtocol {
-    var mediaDataSet: [HomeModel] { get set }    
+    var mediaDataSet: HomeModel? { get set }    
 }

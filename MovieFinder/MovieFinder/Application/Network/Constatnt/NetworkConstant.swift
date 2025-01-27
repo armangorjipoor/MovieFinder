@@ -8,7 +8,7 @@
 import Foundation
 
 enum NetworkConstant: String {
-    case APIRoot = "www.namava.ir/api/"
+    case APIRoot = "www.namava.ir/api"
     case httpProtocol = "http"
     case httpsProtocl = "https"
 }

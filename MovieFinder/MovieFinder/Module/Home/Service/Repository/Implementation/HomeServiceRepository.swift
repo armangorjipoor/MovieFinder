@@ -12,8 +12,9 @@ class HomeServiceRepository: BaseServiceRepository, HomeServiceRepositoryProtoco
     func search(via text: String) -> AnyPublisher<HomeModel, any Error> {
         network.get(path: HomeRoute.search.rawValue, parameter: nil)
                 .tryMap { data -> HomeModel in
-                    let response = try JSONDecoder().decode(HomeResponse.self, from: data)
-                    return response.map()
+                    JSONSerialization.printJSON(with: data)
+                    let response = try JSONDecoder().decode(ItemResponse<HomeResponse>.self, from: data)
+                    return response.result.map()
                 }
                 .eraseToAnyPublisher()
     }

@@ -23,6 +23,16 @@ class HomeViewController: ViewControllerWithViewModelSupport {
         return view
     }()
 
+    private lazy var btn: UIButton  = {
+        let view = UIButton()
+        view.backgroundColor = .blue
+        view.setTitle("Tap me", for: .normal)
+        view.widthAnchor.constraint(equalToConstant: 100).isActive = true
+        view.heightAnchor.constraint(equalToConstant: 100).isActive = true
+        view.addTarget(self, action: #selector(btnTap), for: .touchUpInside)
+        return view
+    }()
+    
     var vm: HomeViewModelProtocol
     init(vm: HomeViewModelProtocol) {
         self.vm = vm
@@ -31,19 +41,25 @@ class HomeViewController: ViewControllerWithViewModelSupport {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = .green
         bindViewModelStatus(vm: vm)
-        vm.loadData(first: true)
+        vm.loadData()
         addConstraint()
     }
     
     func addConstraint() {
         view.addSubview(table)
-        
+        view.addSubview(btn)
+        btn.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        btn.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
         table
         table
         table
     }
 
+    @objc func btnTap() {
+        vm.loadData()
+    }
     override func loaded() {
 //        hideApplicationPageLoading(animated: true, completion: nil)
         table.reloadData()
