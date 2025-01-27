@@ -36,12 +36,13 @@ class HomeViewController: ViewControllerWithViewModelSupport {
         return view
     }()
     
-    lazy var table: UITableView = {
+    lazy var resultTableView: UITableView = {
         let view = UITableView()
-//        view.delegate = self
-//        view.dataSource = self
-//        view.register(UI.Address.List.Cell.self, forCellReuseIdentifier: UI.Address.List.Cell.reuseIdentifier())
+        view.delegate = self
+        view.dataSource = self
+        view.register(SearchMediaCell.self, forCellReuseIdentifier: HomeViewControllerConstant.tableViewCellIdentifier)
         view.showsVerticalScrollIndicator = false
+        view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
 
@@ -89,7 +90,16 @@ class HomeViewController: ViewControllerWithViewModelSupport {
                                                   constant:  -HomeViewControllerConstant.subviewsSideDistance),
             searchField.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20)
         ])
-        view.addSubview(table)
+        
+        view.addSubview(resultTableView)
+        NSLayoutConstraint.activate([
+            resultTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: HomeViewControllerConstant.subviewsSideDistance),
+            resultTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor,
+                                                      constant:  -HomeViewControllerConstant.subviewsSideDistance),
+            resultTableView.topAnchor.constraint(equalTo: searchField.bottomAnchor, constant: 10),
+            resultTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: 20)
+        ])
+        
       
     }
 
@@ -114,7 +124,7 @@ class HomeViewController: ViewControllerWithViewModelSupport {
     }
     override func loaded() {
 //        hideApplicationPageLoading(animated: true, completion: nil)
-        table.reloadData()
+        resultTableView.reloadData()
     }
     
     override func handleError(error: NSError) {
