@@ -8,5 +8,7 @@
 import Foundation
 
 protocol MediaDetailViewModelProtocol {
+    var detailModel: MediaDetailModel? { get set }
     
+    func getDetail(for id: Int)
 }

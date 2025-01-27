@@ -6,7 +6,8 @@
 //
 
 import Foundation
+import Combine
 
 protocol MediaDetailServiceRepositoryProtocol {
-    
+    func getMediaDetail(with id: String) -> AnyPublisher<MediaDetailModel, any Error>
 }

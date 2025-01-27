@@ -9,11 +9,11 @@ import Foundation
 import Combine
 
 class MediaDetailServiceRepository: BaseServiceRepository, MediaDetailServiceRepositoryProtocol {
-    func search(via text: String, count: Int, page: Int) -> AnyPublisher<HomeModel, any Error> {
-        network.get(path: HomeRoute.search.rawValue, parameter: ["count" : "\(count)", "page" : "\(page)", "query" : text])
-                .tryMap { data -> HomeModel in
+    func getMediaDetail(with id: String) -> AnyPublisher<MediaDetailModel, any Error> {
+        network.get(path: HomeRoute.search.rawValue, parameter: nil)
+                .tryMap { data -> MediaDetailModel in
                     JSONSerialization.printJSON(with: data)
-                    let response = try JSONDecoder().decode(ItemResponse<HomeResponse>.self, from: data)
+                    let response = try JSONDecoder().decode(ItemResponse<MediaDetailResponse>.self, from: data)
                     return response.result.map()
                 }
                 .eraseToAnyPublisher()
