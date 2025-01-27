@@ -14,7 +14,7 @@ enum HomeViewControllerConstant {
     static let searchLimitCharacter = 2
     static let searchDelay = 2000
     static let subviewsSideDistance: CGFloat = 20.0
-    static let desiredResultItemsCount: Int = 99
+    static let desiredResultItemsCount: Int = 4
 }
 
 class HomeViewController: ViewControllerWithViewModelSupport {
@@ -98,7 +98,7 @@ class HomeViewController: ViewControllerWithViewModelSupport {
     private func performSearch(for term: String) {
         if term.count > HomeViewControllerConstant.searchLimitCharacter {
             print("\(term)")
-            vm.doSearch(for: term, count: HomeViewControllerConstant.desiredResultItemsCount, page: 1)
+            vm.doSearch(for: term, count: HomeViewControllerConstant.desiredResultItemsCount)
         }
     }
  

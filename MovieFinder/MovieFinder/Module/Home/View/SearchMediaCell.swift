@@ -10,7 +10,7 @@ import UIKit
 
 class SearchMediaCell: UITableViewCell {
     
-    private let customImageView: UIImageView = {
+    private let mediaImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
@@ -31,16 +31,17 @@ class SearchMediaCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-        contentView.addSubview(customImageView)
+        contentView.addSubview(mediaImageView)
         contentView.addSubview(mediaLabel)
         
         NSLayoutConstraint.activate([
-            customImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10),
-            customImageView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-            customImageView.widthAnchor.constraint(equalToConstant: 60),
-            customImageView.heightAnchor.constraint(equalToConstant: 60),
+            mediaImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10),
+            mediaImageView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            mediaImageView.widthAnchor.constraint(equalToConstant: 100),
+            mediaImageView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: -10),
+            mediaImageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -10),
             
-            mediaLabel.leadingAnchor.constraint(equalTo: customImageView.trailingAnchor, constant: 10),
+            mediaLabel.leadingAnchor.constraint(equalTo: mediaImageView.trailingAnchor, constant: 10),
             mediaLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10),
             mediaLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor)
         ])
@@ -52,27 +53,8 @@ class SearchMediaCell: UITableViewCell {
     
     func bind(with imageUrl: String, text: String) {
         mediaLabel.text = text
-        loadImage(from: imageUrl)
+        mediaImageView.loadImage(from: imageUrl)
     }
-    
-    private func loadImage(from urlString: String) {
-        guard let url = URL(string: urlString) else {
-            self.customImageView.image = UIImage(systemName: "photo") // Placeholder image
-            return
-        }
-        
-        URLSession.shared.dataTask(with: url) { [weak self] data, _, error in
-            guard let self = self, let data = data, error == nil else {
-                DispatchQueue.main.async {
-                    self?.customImageView.image = UIImage(systemName: "photo") // Placeholder image
-                }
-                return
-            }
-            let image = UIImage(data: data)
-            DispatchQueue.main.async {
-                self.customImageView.image = image
-            }
-        }.resume()
-    }
+
 }
  

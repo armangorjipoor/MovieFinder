@@ -15,7 +15,7 @@ class Network:  NSObject, NetworkProtocol {
     
     internal func createTask(path: String,
                              method: NetworkHTTPMethodEnum,
-                             parameter: [String: String]? = nil,
+                             parameter: [(String, String)]? = nil,
                              payload: Encodable?,
                              timeout: TimeInterval) -> AnyPublisher<Data, Error> {
         
@@ -38,7 +38,7 @@ class Network:  NSObject, NetworkProtocol {
         .eraseToAnyPublisher()
     }
     
-    internal func createRequest(path: String, method: NetworkHTTPMethodEnum, parameter: [String: String]?, payload: Encodable?, timeout: TimeInterval) -> URLRequest {
+    internal func createRequest(path: String, method: NetworkHTTPMethodEnum, parameter: [(String, String)]?, payload: Encodable?, timeout: TimeInterval) -> URLRequest {
         var request = URLRequest(url: serverApiPathString(path: path, parameter: parameter),
                                  cachePolicy: sessionManager.session.configuration.requestCachePolicy,
                                  timeoutInterval: timeout)
@@ -102,7 +102,7 @@ class Network:  NSObject, NetworkProtocol {
         return headers
     }
     
-    internal func serverApiPathString(path: String, parameter: [String: String]? ) -> URL {
+    internal func serverApiPathString(path: String, parameter: [(String, String)]? ) -> URL {
         
         guard var urlComponent = URLComponents(string: "\(endPointProtocol())://\(endPoint())") else { return URL(string: "")!}
         
@@ -167,7 +167,7 @@ class Network:  NSObject, NetworkProtocol {
     
     open func maximumTimeout() -> TimeInterval { 15 }
 
-    public func get(path: String, parameter: [String: String]? = nil) -> AnyPublisher<Data, Error> {
+    public func get(path: String, parameter: [(String, String)]? = nil) -> AnyPublisher<Data, Error> {
         return createTask(path: path, method: .get, parameter: parameter, payload: nil, timeout: maximumTimeout())
     }
 

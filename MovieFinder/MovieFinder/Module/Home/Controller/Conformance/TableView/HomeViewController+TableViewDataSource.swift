@@ -10,12 +10,12 @@ import UIKit
 
 extension HomeViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        vm.mediaDataSet?.mediaDataset.count ?? 0
+        vm.mediaDataSet?.count ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        guard let mediaItem = vm.mediaDataSet?.mediaDataset[indexPath.row] else { return UITableViewCell() }
+        guard let mediaItem = vm.mediaDataSet?[indexPath.row] else { return UITableViewCell() }
         
         let cell = tableView.dequeueReusableCell(withIdentifier: HomeViewControllerConstant.tableViewCellIdentifier, for: indexPath) as!
         SearchMediaCell
@@ -23,5 +23,7 @@ extension HomeViewController: UITableViewDataSource {
         return cell
     }
     
-    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        200
+    }
 }
