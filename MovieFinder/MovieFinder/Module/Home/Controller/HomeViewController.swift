@@ -14,7 +14,7 @@ enum HomeViewControllerConstant {
     static let searchLimitCharacter = 2
     static let searchDelay = 2000
     static let subviewsSideDistance: CGFloat = 20.0
-    static let desiredResultItemsCount: Int = 99
+    static let desiredResultItemsCount: Int = 4
 }
 
 class HomeViewController: ViewControllerWithViewModelSupport {
@@ -23,10 +23,17 @@ class HomeViewController: ViewControllerWithViewModelSupport {
         let view = UITextField()
         view.delegate = self
         view.borderStyle = .roundedRect
-        view.backgroundColor = .white
+        view.backgroundColor = .lightGray
         view.textAlignment = .left
         view.heightAnchor.constraint(equalToConstant: 40).isActive = true
         view.placeholder = "فیلم، سریال، بازیگر"
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
+    private lazy var emptyView: EmptyView  = {
+        let view = EmptyView()
+        view.isHidden = true
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
@@ -46,28 +53,29 @@ class HomeViewController: ViewControllerWithViewModelSupport {
         return view
     }()
 
+    var coordinator: MainCoordinator
     var vm: HomeViewModelProtocol
-    init(vm: HomeViewModelProtocol) {
+    init(vm: HomeViewModelProtocol, coordinator: MainCoordinator) {
         self.vm = vm
+        self.coordinator = coordinator
+        
         super.init()
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .lightGray
+        view.backgroundColor = .white
         bindViewModelStatus(vm: vm)
         
         NotificationCenter.default.publisher(for: UITextField.textDidChangeNotification, object: searchField)
-                    .compactMap { ($0.object as? UITextField)?.text } // Extract text from notification
-                    .debounce(for: .milliseconds(HomeViewControllerConstant.searchDelay), scheduler: RunLoop.main) // Debounce for 500ms
-                    .removeDuplicates() // Avoid repeating the same value
+                    .compactMap { ($0.object as? UITextField)?.text }
+                    .debounce(for: .milliseconds(HomeViewControllerConstant.searchDelay), scheduler: RunLoop.main)
+                    .removeDuplicates()
                     .sink { [weak self] debouncedText in
                         guard let weakSelf = self else { return }
                         weakSelf.performSearch(for: debouncedText)
                     }
                     .store(in: &cancellables)
-        vm.loadData()
-        
         addConstraint()
     }
     
@@ -78,7 +86,7 @@ class HomeViewController: ViewControllerWithViewModelSupport {
             searchField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: HomeViewControllerConstant.subviewsSideDistance),
             searchField.trailingAnchor.constraint(equalTo: view.trailingAnchor,
                                                   constant:  -HomeViewControllerConstant.subviewsSideDistance),
-            searchField.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20)
+            searchField.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 5)
         ])
         
         view.addSubview(resultTableView)
@@ -90,28 +98,41 @@ class HomeViewController: ViewControllerWithViewModelSupport {
             resultTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: 20)
         ])
         
-      
+        view.addSubview(emptyView)
+        NSLayoutConstraint.activate([
+            emptyView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: HomeViewControllerConstant.subviewsSideDistance),
+            emptyView.trailingAnchor.constraint(equalTo: view.trailingAnchor,
+                                                      constant:  -HomeViewControllerConstant.subviewsSideDistance),
+            emptyView.topAnchor.constraint(equalTo: searchField.bottomAnchor, constant: 10),
+            emptyView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: 20)
+        ])
     }
 
     private func performSearch(for term: String) {
         if term.count > HomeViewControllerConstant.searchLimitCharacter {
             print("\(term)")
-            vm.doSearch(for: term, count: HomeViewControllerConstant.desiredResultItemsCount, page: 1)
+            vm.doSearch(for: term, count: HomeViewControllerConstant.desiredResultItemsCount)
         }
     }
  
     override func loaded() {
-//        hideApplicationPageLoading(animated: true, completion: nil)
+//        hideApplicationPageLoading()
+        if let anyItem = vm.mediaDataSet {
+            if anyItem.isEmpty {
+                emptyView.isHidden = false
+            } else {
+                emptyView.isHidden = true
+            }
+        } else {
+            emptyView.isHidden = false
+        }
         resultTableView.reloadData()
     }
     
     override func handleError(error: NSError) {
 //        hideApplicationPageLoading(animated: true, completion: nil)
 //        
-//        showRetryView(retryHandler: { [weak self] in
-//            guard let weak = self else { return }
-//            weak.vm.loadData(first: false)
-//        })
+        showAlert(withMessage: "خطایی پیش آمده است")
     }
 
 }

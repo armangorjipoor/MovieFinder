@@ -10,9 +10,8 @@ import Combine
 
 class HomeServiceRepository: BaseServiceRepository, HomeServiceRepositoryProtocol {
     func search(via text: String, count: Int, page: Int) -> AnyPublisher<HomeModel, any Error> {
-        network.get(path: HomeRoute.search.rawValue, parameter: ["count" : "\(count)", "page" : "\(page)", "query" : text])
+        network.get(path: HomeRoute.search.rawValue, parameter: [("count", "\(count)"), ("page", "\(page)"), ("query", text)])
                 .tryMap { data -> HomeModel in
-                    JSONSerialization.printJSON(with: data)
                     let response = try JSONDecoder().decode(ItemResponse<HomeResponse>.self, from: data)
                     return response.result.map()
                 }

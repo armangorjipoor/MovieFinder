@@ -43,9 +43,19 @@ class BaseViewController: UIViewController {
         // To be implemented
     }
     
+    func showAlert(withMessage message: String) {
+        // Create the alert controller
+        let alertController = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
+        
+        // Add the OK button
+        let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+        alertController.addAction(okAction)
+        
+        // Present the alert on the given view controller
+        self.present(alertController, animated: true, completion: nil)
+    }
+    
     deinit {
-        // Combine subscriptions automatically cancel on deallocation,
-        // so no need to manually handle it unless using `AnyCancellable?`.
         cancellable = nil
     }
 }

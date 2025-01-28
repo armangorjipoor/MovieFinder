@@ -10,11 +10,11 @@ import UIKit
 
 final class CastDetailCoordinator {
     var navigationController: UINavigationController
-    private let dependencyManager: DependencyManager
+    private let dependencyManager = DependencyManager.shared
 
-    init(navigationController: UINavigationController, dependencyManager: DependencyManager) {
+    init(navigationController: UINavigationController) {
         self.navigationController = navigationController
-        self.dependencyManager = dependencyManager
+        
     }
 
     func start(with castId: Int) {
