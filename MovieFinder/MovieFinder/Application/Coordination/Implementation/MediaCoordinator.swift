@@ -17,8 +17,9 @@ final class MediaDetailCoordinator {
     }
 
     func start(with media: HomeModel.ResultItem.Group.Media.Item) {
-//        let castViewModel = dependencyContainer.resolve(CastDetailViewModel.self, argument: castId)
-//        let castDetailViewController = CastDetailViewController(viewModel: castViewModel)
-//        navigationController.pushViewController(castDetailViewController, animated: true)
+        
+        let mediaVM = dependencyManager.resolve(type: MediaDetailViewModelProtocol.self, arguments: [media.id])
+        let mediaDetailViewController = MediaDetailViewController(vm: mediaVM)
+        navigationController.pushViewController(mediaDetailViewController, animated: true)
     }
 }

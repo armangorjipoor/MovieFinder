@@ -24,7 +24,7 @@ extension DependencyManager {
     
     func viewModelRegistry() {
         register(type: MediaDetailViewModelProtocol.self) { [unowned self] arguments in
-            let mediaId: Int = arguments[0] as! Int
+            let  mediaId: String = arguments[0] as? String ?? "0"
             
             let repository: MediaDetailServiceRepositoryProtocol = resolve(type: MediaDetailServiceRepositoryProtocol.self, arguments: [])
             let vm: MediaDetailViewModelProtocol = MediaDetailViewModel(repository: repository, mediaId: mediaId)

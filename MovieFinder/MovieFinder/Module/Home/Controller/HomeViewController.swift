@@ -53,11 +53,12 @@ class HomeViewController: ViewControllerWithViewModelSupport {
         return view
     }()
 
-    weak var coordinator: MainCoordinator?
-    
+    var coordinator: MainCoordinator
     var vm: HomeViewModelProtocol
-    init(vm: HomeViewModelProtocol) {
+    init(vm: HomeViewModelProtocol, coordinator: MainCoordinator) {
         self.vm = vm
+        self.coordinator = coordinator
+        
         super.init()
     }
 
@@ -67,16 +68,14 @@ class HomeViewController: ViewControllerWithViewModelSupport {
         bindViewModelStatus(vm: vm)
         
         NotificationCenter.default.publisher(for: UITextField.textDidChangeNotification, object: searchField)
-                    .compactMap { ($0.object as? UITextField)?.text } // Extract text from notification
-                    .debounce(for: .milliseconds(HomeViewControllerConstant.searchDelay), scheduler: RunLoop.main) // Debounce for 500ms
-                    .removeDuplicates() // Avoid repeating the same value
+                    .compactMap { ($0.object as? UITextField)?.text }
+                    .debounce(for: .milliseconds(HomeViewControllerConstant.searchDelay), scheduler: RunLoop.main)
+                    .removeDuplicates()
                     .sink { [weak self] debouncedText in
                         guard let weakSelf = self else { return }
                         weakSelf.performSearch(for: debouncedText)
                     }
                     .store(in: &cancellables)
-        vm.loadData()
-        
         addConstraint()
     }
     

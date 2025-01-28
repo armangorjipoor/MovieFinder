@@ -119,7 +119,6 @@ class Network:  NSObject, NetworkProtocol {
         let  urlWithPath = url.appendingPathComponent(path2).absoluteString
         let res = URL.init(string: urlWithPath)       
         
-        print("😑 \(res) -- \(url)")
         return res ?? url
         
     }

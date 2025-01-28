@@ -18,8 +18,8 @@ final class MainCoordinator: CoordinatorProtocol {
     }
 
     func start() {
-        let homeViewController = HomeViewController(vm: dependencyManager.resolve(type: HomeViewModelProtocol.self, arguments: []))
-        homeViewController.coordinator = self
+        let homeViewController = HomeViewController(vm: dependencyManager.resolve(type: HomeViewModelProtocol.self, arguments: []), coordinator: self)
+//        homeViewController.coordinator = self
         navigationController.pushViewController(homeViewController, animated: true)
     }
 
